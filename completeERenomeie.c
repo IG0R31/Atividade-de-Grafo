@@ -217,25 +217,30 @@ bool removeAresta(Grafo* g, int v1, int v2){
   
   /* Funcao que calcula a Centralidade de Grau de todos os vertices. */
   void centralidadeDeGrau(Grafo* g, double* valores) {
+    if(g==NULL || valores ==NULL)return;
     int n = g->numVertices;
-    for (int v=0; v< n; v++){
-      int grau = 0;
-      
-      for(int u=0 ; u<n; u++){
-        if(g->matriz[v][u]){
-          grau++;
+    if(n<=1){
+      for(int v=0; v < n; v++){
+        valores[v]= 0.0;
+      }
+      return;
+    }
+    for(int v = 0; v < n; v++){
+      int grauEntrada = 0;
+      for(int u = 0; u < n; u++){
+        if(u != v && g->matriz[u][v]){
+          grauEntrada++;
         }
       }
-      valores[v] = (double)grau;
+      valores[v] = (double)grauEntrada / (n-1);
     }
-  
   }
   
   
   /* Funcao que calcula a Centralidade de Proximidade de todos os vertices. */
   void centralidadeDeProximidade(Grafo* g, double* valores) {
-  
-    /*
+    /* COMPLETE/IMPLEMENTE ESTA FUNCAO */
+    
   }
   
   
@@ -362,5 +367,5 @@ bool removeAresta(Grafo* g, int v1, int v2){
    
     testaFuncoes(g3, n);
   
-    return 0;  
+      return 0;  
   }
