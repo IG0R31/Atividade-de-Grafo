@@ -1,8 +1,8 @@
 /*********************************************************************/
 /**   Estruturas de Dados II                                        **/
 /**         CDIA                                                    **/
+/**   GRAFOS EM REDES SOCIAIS                                                               **/
 /**   Igor Oliveira Duarte                                          **/
-/**                                                                 **/
 /*********************************************************************/
 
 #include <stdio.h>
@@ -217,8 +217,17 @@ bool removeAresta(Grafo* g, int v1, int v2){
   
   /* Funcao que calcula a Centralidade de Grau de todos os vertices. */
   void centralidadeDeGrau(Grafo* g, double* valores) {
-  
-    /* COMPLETE/IMPLEMENTE ESTA FUNCAO */
+    int n = g->numVertices;
+    for (int v=0; v< n; v++){
+      int grau = 0;
+      
+      for(int u=0 ; u<n; u++){
+        if(g->matriz[v][u]){
+          grau++;
+        }
+      }
+      valores[v] = (double)grau;
+    }
   
   }
   
@@ -226,8 +235,7 @@ bool removeAresta(Grafo* g, int v1, int v2){
   /* Funcao que calcula a Centralidade de Proximidade de todos os vertices. */
   void centralidadeDeProximidade(Grafo* g, double* valores) {
   
-    /* COMPLETE/IMPLEMENTE ESTA FUNCAO */
-  
+    /*
   }
   
   
