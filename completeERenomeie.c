@@ -239,7 +239,42 @@ bool removeAresta(Grafo* g, int v1, int v2){
   
   /* Funcao que calcula a Centralidade de Proximidade de todos os vertices. */
   void centralidadeDeProximidade(Grafo* g, double* valores) {
-    /* COMPLETE/IMPLEMENTE ESTA FUNCAO */
+     int n = g->numVertices;
+     int** dist =(int**)malloc(n*sizeof(int*));
+     for(int i=0; i<n; i++){
+      dist[i] = (int*)malloc(n * sizeof(int));
+     }
+     int** pred =(int**)malloc(n*sizeof(int*));
+     for(int i=0; i<n; i++){
+      dist[i] = (int*)malloc(n*sizeof(int*));
+     }
+
+     //TESTE DE CHAMADA DE DISTANCIA CALCULO FLOYD-WARSHALL
+     calculaDistanciaFloydWarshall(g,  dist, pred);
+     //para cada vertice
+     for (int v = 0; v<n; v++){
+      double somaDistancias = 0.0;
+      int verticesAlcancaveis = 0;
+      //distancia de v pa4ra todos os outros vertices
+      for(int u = 0; u< n; u++){
+        if(v != u && dist[v][u]< INFINITO){
+          somaDistancias  += dist[v][u];
+          verticesAlcancaveis++;
+        }
+      }
+
+      if(verticesAlcancaveis > 0 && somaDistancias >0){
+        valores[v] = (double)(verticesAlcancaveis)/ somaDistancias; 
+      }else{
+        valores[v] = 0.0;
+      }
+     }
+     for(int i = 0; i<n; i++){
+      free(dist[i]);
+      free(pred[i]);
+     }
+     free(dist);
+     free(pred);
     
   }
   
