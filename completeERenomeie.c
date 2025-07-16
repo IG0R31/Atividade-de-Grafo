@@ -1,7 +1,7 @@
 /*********************************************************************/
 /**   Estruturas de Dados II                                        **/
 /**         CDIA                                                    **/
-/**   GRAFOS EM REDES SOCIAIS                                                               **/
+/**   GRAFOS EM REDES SOCIAIS                                      **/
 /**   Igor Oliveira Duarte                                          **/
 /*********************************************************************/
 
