@@ -283,19 +283,19 @@ bool removeAresta(Grafo* g, int v1, int v2){
   //TOPICOS PARA NÃO ESQUECER DEPOIS
   //-> fazer função para cada par de vértices (s,t) -> função para MENOR distancia -> Inspirar em algoritmos de Brandes
   void centralidadeDeIntermediacao(Grafo* g, double* valores) {
-    if(g! || valores || g->numVertices < 5){          // para caso o vértice seja menor que 5 ele ser equivalente à: 0.0
+    if(!g || valores || g->numVertices < 5){          // para caso o vértice seja menor que 5 ele ser equivalente à: 0.0
       for(int i = 0; g && i < g->numVertices; i++)valores [i] = 0.0;
       return;
     }
      //tentando alocar a memória
      int n= g->numVertices;
-     int dist = (int**)malloc(n *sizeof(int)*);
-     int dis = (int**)malloc(n *sizeof(int)*);
+     int dist = (int**)malloc(n *sizeof(int*));
+     int pred = (int**)malloc(n *sizeof(int*));
 
     calculaDistanciaFloydWarshall(g, dist, pred); 
 
     double* interseccao =(double*)calloc(n, sizeof(double));
-    
+
 
 
     
