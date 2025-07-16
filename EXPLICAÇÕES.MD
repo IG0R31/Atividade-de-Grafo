@@ -37,7 +37,7 @@
 #### Representação de uma Matriz de Centralização de Proximidade
 ![ Centralidade de Grau](CP_page-0001.jpg)
 ## --> Algoritmo implementado: 
-            void centralidadeDeProximidade(Grafo* g, double* valores) {
+        void centralidadeDeProximidade(Grafo* g, double* valores) {
         int n = g->numVertices;
         int** dist =(int**)malloc(n*sizeof(int*));
         for(int i=0; i<n; i++){
@@ -63,7 +63,7 @@
         }
 
         if(verticesAlcancaveis > 0 && somaDistancias >0){
-            valores[v] = (double)(verticesAlcancaveis)/ somaDistancias; 
+            valores[v] = (double)(n-1)/ somaDistancias; 
         }else{
             valores[v] = 0.0;
         }
@@ -76,5 +76,4 @@
         free(pred);
         
     }
-
-    
+        
