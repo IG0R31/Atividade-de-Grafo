@@ -7,6 +7,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <math.h>
 
 #define true 1
 #define false 0
@@ -354,10 +355,46 @@ bool removeAresta(Grafo* g, int v1, int v2){
   
   
   /* Funcao que calcula a Centralidade Page Rank de todos os vertices. */
+  /* Adiciondo mais parametros. Função baseada no Algoritmo de Power Interation*/
   void centralidadePageRank(Grafo* g, double* valores, int iteracoes) {
-  
-    /* COMPLETE/IMPLEMENTE ESTA FUNCAO */
-  
+    if(!g || !valores || iteracoes<=0)return;
+    int n= g->numVertices;
+    //adicionando os fatores de amortecimento
+    const double d = 0.85;
+    double* r_prev = (double*)malloc(n * sizeof(double)); // alocação de memória do pagerank anterior 
+
+    //Uniformizando todos os valores para 1.0/n
+    for(int i = 0; i<n; i++){
+      valores[i] = 1.0 /n;
+
+    }
+    for(int t = 0; t < iteracoes; t++){
+      for(int i = 0; i<n; i++){     //loop do Power Interation para interar todo PageRank para r_prev
+        r_prev[i] = valores[i];
+      }
+      int* grau_saida =(int*)calloc(n, sizeof(int)); //calculo de saída 
+      for(int i = 0; i<n ; i++){
+        for (int j = 0; j<n; j++){
+          if(i != j && g->matriz[i][j]){
+            grau_saida[i]++;
+          }
+        }
+      }
+      //Atualizando o valor da Pagina
+      for (int i=0; i<n; i++){
+        double soma = 0.0; 
+        for(int j = 0; j< n; j++){
+          if(g->matriz[j][i] && j != i){
+            if(grau_saida[j]>0){
+              soma += r_prev[j] / grau_saida[j];
+            }
+          }
+        }
+        valores[i] = (1.0 - d)/ n + d *soma;
+      }
+      free(grau_saida);
+    }
+    free(prev);
   }
   
   
