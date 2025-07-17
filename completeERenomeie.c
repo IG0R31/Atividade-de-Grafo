@@ -246,7 +246,7 @@ bool removeAresta(Grafo* g, int v1, int v2){
      }
      int** pred =(int**)malloc(n*sizeof(int*));
      for(int i=0; i<n; i++){
-      dist[i] = (int*)malloc(n*sizeof(int*));
+      pred[i] = (int*)malloc(n * sizeof(int));
      }
 
      //TESTE DE CHAMADA DE DISTANCIA CALCULO FLOYD-WARSHALL
@@ -289,8 +289,13 @@ bool removeAresta(Grafo* g, int v1, int v2){
     }
      //tentando alocar a memória
      int n= g->numVertices;
-     int dist = (int**)malloc(n *sizeof(int*));
-     int pred = (int**)malloc(n *sizeof(int*));
+     int** dist = (int**)malloc(n *sizeof(int*));
+     int** pred = (int**)malloc(n *sizeof(int*));
+     //adicionando distancia a ser percorrida
+     for(int i = 0; i<n; i++){
+      dist[i] = (int*)malloc(n *  sizeof(int));
+      pred[i]= (int*)malloc(n * sizeof(int));
+     }
 
     calculaDistanciaFloydWarshall(g, dist, pred); 
 
@@ -311,7 +316,7 @@ bool removeAresta(Grafo* g, int v1, int v2){
         for(int w= 0;w<n; w++){
           if(dist[v][w]== 1 && g->matriz[v][w]){
             sigma[w] += sigma[v];
-            if(--dist[v][w]=0){
+            if(dist[v][w]==0){
               queue[qend++]=w;
             }
           }
