@@ -283,7 +283,7 @@ bool removeAresta(Grafo* g, int v1, int v2){
   //TOPICOS PARA NÃO ESQUECER DEPOIS
   //-> fazer função para cada par de vértices (s,t) -> função para MENOR distancia -> Inspirar em algoritmos de Brandes
   void centralidadeDeIntermediacao(Grafo* g, double* valores) {
-    if(!g || valores || g->numVertices < 5){          // para caso o vértice seja menor que 5 ele ser equivalente à: 0.0
+    if(!g || !valores || g->numVertices < 5){          // para caso o vértice seja menor que 5 ele ser equivalente à: 0.0
       for(int i = 0; g && i < g->numVertices; i++)valores [i] = 0.0;
       return;
     }
@@ -296,9 +296,55 @@ bool removeAresta(Grafo* g, int v1, int v2){
 
     double* interseccao =(double*)calloc(n, sizeof(double));
 
+    for(int s = 0; s<n; s++){
+      double* sigma =(double*)calloc(n, sizeof(double));
+      sigma[s]=1;
+      
+      int* queue= (int*)malloc(n * sizeof(int));
+      int qstart = 0, qend=0; 
+      queue[qend++]=s;
+      
+      //validação na ordem de processamentos com QSTART-QEND
+      
+      while(qstart<qend){
+        int v= queue[qstart++];
+        for(int w= 0;w<n; w++){
+          if(dist[v][w]== 1 && g->matriz[v][w]){
+            sigma[w] += sigma[v];
+            if(--dist[v][w]=0){
+              queue[qend++]=w;
+            }
+          }
+        }
+      }
+      //DEPENDENCIA
+      double* delta=(double*)calloc(n, sizeof(double));
+      while (qend <= 0){
+        int w = queue[qend];
+        for(int v = 0; v<n; v++){
+          if(g->matriz[v][w] && dist[v][w]+ 1== dist[v][s]){
+            delta[v]+=sigma[v]/sigma[w]* (1 + delta[w]);
+          }
+        }
+        if(w != s)interseccao[w] += delta[w];
+      }
+      free(sigma);
+      free(delta);
+      free(queue);
 
-
-    
+    }
+    //NORMALIZAÇÃO DO 
+    double norm = 1.0/((n-1)*(n-2));
+    for(int v= 0; v < n; v++){
+      valores[v]= interseccao[v]*norm;
+    }
+    free(interseccao);
+    for(int i =1; i<n; i++){
+      free(dist[i]);
+      free(pred[i]);
+    }
+    free(dist);
+    free(pred);    
   }
   
   
