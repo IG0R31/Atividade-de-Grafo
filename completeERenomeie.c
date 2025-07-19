@@ -43,7 +43,7 @@ bool inicializaGrafo(Grafo* g, int vertices){
     g->numVertices = vertices;
     g->numArestas = 0;
     int x, y;
-    g->matriz = (bool**)malloc(sizeof(bool)*vertices);
+    g->matriz = (bool**)malloc(sizeof(bool*)*vertices);
     for (x=0; x<vertices; x++){
         g->matriz[x] = (bool*)malloc(sizeof(bool)*vertices);
         for(y=0; y<vertices; y++){
@@ -240,6 +240,9 @@ bool removeAresta(Grafo* g, int v1, int v2){
   
   /* Funcao que calcula a Centralidade de Proximidade de todos os vertices. */
   void centralidadeDeProximidade(Grafo* g, double* valores) {
+     if(g==NULL || valores ==NULL)return;
+    
+    
      int n = g->numVertices;
      int** dist =(int**)malloc(n*sizeof(int*));
      for(int i=0; i<n; i++){
@@ -255,7 +258,7 @@ bool removeAresta(Grafo* g, int v1, int v2){
      //para cada vertice
      for (int v = 0; v<n; v++){
       double somaDistancias = 0.0;
-      int verticesAlcancaveis = 0;
+      int verticesAlcancaveis = 0;  
       //distancia de v pa4ra todos os outros vertices
       for(int u = 0; u< n; u++){
         if(v != u && dist[v][u]< INFINITO){
@@ -285,74 +288,7 @@ bool removeAresta(Grafo* g, int v1, int v2){
   //-> fazer função para cada par de vértices (s,t) -> função para MENOR distancia -> Inspirar em algoritmos de Brandes
   void centralidadeDeIntermediacao(Grafo* g, double* valores) {
     if(!g || !valores || g->numVertices < 5){          // para caso o vértice seja menor que 5 ele ser equivalente à: 0.0
-      for(int i = 0; g && i < g->numVertices; i++)valores [i] = 0.0;
-      return;
-    }
-     //tentando alocar a memória
-     int n= g->numVertices;
-     int** dist = (int**)malloc(n *sizeof(int*));
-     int** pred = (int**)malloc(n *sizeof(int*));
-     //adicionando distancia a ser percorrida
-     for(int i = 0; i<n; i++){
-      dist[i] = (int*)malloc(n *  sizeof(int));
-      pred[i]= (int*)malloc(n * sizeof(int));
-     }
-
-    calculaDistanciaFloydWarshall(g, dist, pred); 
-
-    double* interseccao =(double*)calloc(n, sizeof(double));
-
-    for(int s = 0; s<n; s++){
-      double* sigma =(double*)calloc(n, sizeof(double));
-      sigma[s]=1;
       
-      int* queue= (int*)malloc(n * sizeof(int));
-      int qstart = 0, qend=0; 
-      queue[qend++]=s;
-      
-      //validação na ordem de processamentos com QSTART-QEND
-      
-      while(qstart<qend){
-        int v= queue[qstart++];
-        for(int w= 0;w<n; w++){
-          if(dist[v][w]== 1 && g->matriz[v][w]){
-            sigma[w] += sigma[v];
-            if(dist[v][w]==0){
-              queue[qend++]=w;
-            }
-          }
-        }
-      }
-      //DEPENDENCIA
-      double* delta=(double*)calloc(n, sizeof(double));
-      while (qend <= 0){
-        int w = queue[qend];
-        for(int v = 0; v<n; v++){
-          if(g->matriz[v][w] && dist[v][w]+ 1== dist[v][s]){
-            delta[v]+=sigma[v]/sigma[w]* (1 + delta[w]);
-          }
-        }
-        if(w != s)interseccao[w] += delta[w];
-      }
-      free(sigma);
-      free(delta);
-      free(queue);
-
-    }
-    //NORMALIZAÇÃO DO 
-    double norm = 1.0/((n-1)*(n-2));
-    for(int v= 0; v < n; v++){
-      valores[v]= interseccao[v]*norm;
-    }
-    free(interseccao);
-    for(int i =1; i<n; i++){
-      free(dist[i]);
-      free(pred[i]);
-    }
-    free(dist);
-    free(pred);    
-  }
-  
   
   /* Funcao que calcula a Centralidade Page Rank de todos os vertices. */
   /* Adiciondo mais parametros. Função baseada no Algoritmo de Power Interation*/
@@ -394,7 +330,7 @@ bool removeAresta(Grafo* g, int v1, int v2){
       }
       free(grau_saida);
     }
-    free(prev);
+    free(r_prev);
   }
   
   
